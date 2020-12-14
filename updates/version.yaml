@@ -1,0 +1,11 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table pensoft_internaldocuments_folders'
+    - builder_table_create_pensoft_internaldocuments_folders.php
+1.0.3:
+    - 'Created table pensoft_internaldocuments_subfolders'
+    - builder_table_create_pensoft_internaldocuments_subfolders.php
+1.0.4:
+    - 'Updated table system_files'
+    - add_user_id_to_system_files.php
