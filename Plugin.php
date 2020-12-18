@@ -1,14 +1,14 @@
 <?php namespace Pensoft\InternalDocuments;
 
+use Pensoft\InternalDocuments\Components\InternalRepository;
 use System\Classes\PluginBase;
-use Pensoft\Internaldocuments\Components\FilesForm;
 
 class Plugin extends PluginBase
 {
     public function registerComponents()
     {
       return [
-        FilesForm::class => 'filesform',
+        InternalRepository::class => 'internalrepository'
       ];
     }
 }

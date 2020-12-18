@@ -1,0 +1,76 @@
+{% if user %}
+<div class="row middle-xs between-xs">
+	{% partial __SELF__ ~'::search-documents-search-form' folder=folder %}
+
+	{% if has_query %}
+
+		<div class="col-xs-12">
+			<h1 class="base_heading inner-page">Search results for {{ post('query') }}</h1>
+				{% if user %}
+					{% if sub_folders %}
+						{% for resultFolder in sub_folders %}
+							{% partial __SELF__ ~'::internal_documents_search' folder=resultFolder  %}
+						{% endfor %}
+
+						{% for resultFile in files %}
+							{% partial __SELF__ ~'::internal_documents_search' file=resultFile %}
+						{% endfor %}
+
+					{% else %}
+
+						{{'No records found'|_}}
+
+					{% endif %}
+				{% endif %}
+		</div>
+
+	{% else %}
+		<div class="col-xs-12">
+			<h1 class="base_heading inner-page">{{ folder.name }}</h1>
+			{% if folder.getParentsAndSelf.count %}
+			<p>
+				<a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ folder.id }}"><span class="circled_plus"></span> Create folder</a> &nbsp; &nbsp;
+				<a data-toggle="modal" class="modal-link" href="#contentBasicFiles{{ folder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Upload files</a>
+
+
+			</p>
+			{% partial __SELF__ ~ '::_popup-files-form' subfolder=folder %}
+			{% partial __SELF__ ~ '::_popup-folders-form' subfolder=folder partial_name='_folders_list'  %}
+
+			<div id="files_list_{{folder.id}}">
+				{% partial __SELF__ ~ '::_files_list' folder=folder group_id=folder.id %}
+			</div>
+
+			{% endif %}
+
+			<div id="accordion-documents" class="text-left relative ui-accordion ui-widget ui-helper-reset" role="tablist">
+				<div id="sortableFolders{{folder.id}}">
+					{% partial __SELF__ ~ '::_folders_list' folder=folder %}
+				</div>
+				<script>
+					initSort('sortableFolders{{folder.id}}', '{{folder.id}}', 'folders');
+				</script>
+			</div>
+			<script>
+				initAccordeon('accordion-documents', '{{expand}}');
+			</script>
+		</div>
+
+
+		{% if folders.count %}
+			<div class="col-xs-12">
+				<div class="row">
+					{% for record in folders %}
+					<div class="col-xs-12 col-sm-3 card profile no-border" style="margin-bottom: 15px">
+						<a style="display:flex; background: url({{ record.cover.thumb(100,200,{'mode':'crop'}) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
+						<h3 class="card-header"><a href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}" style="color: #fff;">{{ record.name }}</a></h3>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+	{% endif %}
+	
+
+</div>
+{% endif %}

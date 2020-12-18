@@ -12,11 +12,14 @@
 				{% endif %}
 			</div>
 			<div class="col-sm-2 col-xs-12 end-xs">
-				<a href="javascript:;" data-request="onDownloadHandler" data-request-data="files:  [{{file}}]" target="_blank" class="download-icon">Download</a>
+				{% if is_download %}
+					{{__SELF__.downloadFiles(this.page.id)}}
+				{% endif %}
+				<a href="{{ ''| page }}?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a>
 			</div>
 
 			<script>
-				initRightclickDeleteTippy('{{file.id}}', 'file', '{{file}}', '{{file.user_id == user.id}}');
+				initRightclickDeleteTippy('{{file.id}}', 'file', '<a href="?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a><br/>', '{{file.user_id == user.id}}');
 			</script>
 		</div>
 	</div>
