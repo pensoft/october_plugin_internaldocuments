@@ -10,7 +10,7 @@ class AddUserIdToSystemFiles extends Migration
 		if (!Schema::hasColumn('system_files', 'user_id')) {
 			Schema::table('system_files', function($table)
 			{
-				$table->integer('user_id')->default(5);
+				$table->integer('user_id')->nullable();
 			});
 		}
 	}
