@@ -7,20 +7,24 @@ class BuilderTableCreatePensoftInternaldocumentsFolders extends Migration
 {
     public function up()
     {
-        Schema::create('pensoft_internaldocuments_folders', function($table)
-        {
-            $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
-            $table->string('slug')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-            $table->string('name');
-            $table->integer('sort_order')->default(1);
-        });
+        if (!Schema::hasTable('pensoft_internaldocuments_folders')) {
+            Schema::create('pensoft_internaldocuments_folders', function($table)
+            {
+                $table->engine = 'InnoDB';
+                $table->increments('id')->unsigned();
+                $table->string('slug')->nullable();
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
+                $table->string('name');
+                $table->integer('sort_order')->default(1);
+            });
+        }
     }
     
     public function down()
     {
-        Schema::dropIfExists('pensoft_internaldocuments_folders');
+        if (Schema::hasTable('pensoft_internaldocuments_folders')) {
+            Schema::dropIfExists('pensoft_internaldocuments_folders');
+        }
     }
 }
