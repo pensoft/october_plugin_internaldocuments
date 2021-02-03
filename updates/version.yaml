@@ -11,3 +11,5 @@
     - add_user_id_to_system_files.php
 1.0.5:
     - 'Users groups rights'
+1.0.6:
+    - 'Users groups steering committee'
