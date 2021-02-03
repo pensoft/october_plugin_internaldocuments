@@ -1,16 +1,18 @@
 <p>
 	{% if folder.images.count %}
-		{% partial '@documents-images' images=folder.images group_id=folder.id %}
+		{% partial '@documents-images' images=folder.images group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 	{% endif %}
 </p>
 
 <p>
 	{% if folder.files.count %}
 		<div id="sortableFiles{{folder.id}}">
-			{% partial '@documents-files' files=folder.files group_id=folder.id %}
+			{% partial '@documents-files' files=folder.files group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 		</div>
-		<script>
-			initSort('sortableFiles{{folder.id}}', '{{folder.id}}', 'files');
-		</script>
+		{% if is_registered or is_editor %}
+			<script>
+				initSort('sortableFiles{{folder.id}}', '{{folder.id}}', 'files');
+			</script>
+		{% endif %}
 	{% endif %}
 </p>
