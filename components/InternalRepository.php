@@ -33,6 +33,9 @@ class InternalRepository extends ComponentBase
 		$this->addJs('assets/js/popper.min.js');
 		$this->addJs('assets/js/tippy-bundle.umd.min.js');
 		$this->addJs('assets/js/def.js');
+		if(post('download')){
+			$this->downloadFiles();
+		}
 
 		$this->page['queries'] = http_build_query(Input::all());
 		$this->page['is_download'] = post('download', false);
@@ -65,10 +68,10 @@ class InternalRepository extends ComponentBase
 		}
 	}
 
-	public function downloadFiles($pageId){
-		$inputs = Input::except('download');
+	public function downloadFiles(){
+//		$inputs = Input::except('download');
 		$download = Input::get('download');
-		$link = $this->pageUrl($pageId) .'?'. http_build_query($inputs);
+//		$link = $this->pageUrl($pageId) .'?'. http_build_query($inputs);
 		
 		$file_ids = explode(',', $download);
 		if(count($file_ids) === 1){
@@ -108,8 +111,9 @@ class InternalRepository extends ComponentBase
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			readfile($zip_file);
+			exit();
 		}
-		return redirect($link);
+//		return redirect($link);
 	}
 
 	public function onDeleteFile(){

@@ -10,9 +10,6 @@
 </div>
 <div style="clear: both;"></div>
 <p>
-	{% if is_download %}
-		{{__SELF__.downloadFiles(this.page.id)}}
-	{% endif %}
 	<a href="{{ ''| page }}?{{queries}}&download={{images|map(image => image.id)|join(',')}}" target="_self" class="download-icon">Download</a>
 
 	{% if images.count > 7 %}
