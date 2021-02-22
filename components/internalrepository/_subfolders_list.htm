@@ -20,7 +20,7 @@
 			</span></p>
 			{% endif %}
 			<div id="files_list_{{ group.id }}">
-				{% partial __SELF__ ~ '::_files_list' folder=group group_id=group.id %}
+				{% partial __SELF__ ~ '::_files_list' folder=group group_id=group.id is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 			</div>
 
 		</div>

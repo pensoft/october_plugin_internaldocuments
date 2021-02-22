@@ -3,8 +3,10 @@
 use Cms\Classes\ComponentBase;
 
 use Pensoft\Internaldocuments\Models\Subfolders;
+use RainLab\User\Models\User;
 use System\Models\File;
 use RainLab\User\Models\UserGroup;
+use October\Rain\Auth\Models\User as AuthUser;
 
 use Input;
 use Validator;
@@ -195,6 +197,11 @@ class InternalRepository extends ComponentBase
 		$this->page['folder'] = $folderData;
 		$this->page['group_id'] = Input::get('parent');
 		$this->page['user'] = Auth::getUser();
+
+		$user = Auth::getUser();
+		$this->page['is_guest'] = $user->inGroup(UserGroup::where('code', 'guest')->first());
+		$this->page['is_registered'] = $user->inGroup(UserGroup::where('code', 'registered')->first());
+		$this->page['is_editor'] = $user->inGroup(UserGroup::where('code', 'internal-users')->first());
 
 	}
 
