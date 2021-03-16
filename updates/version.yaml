@@ -9,3 +9,9 @@
 1.0.4:
     - 'Updated table system_files'
     - add_user_id_to_system_files.php
+1.0.5:
+    - 'Users groups rights'
+1.0.6:
+    - 'Users groups steering committee'
+1.0.7:
+    - 'mp4 file upload'
