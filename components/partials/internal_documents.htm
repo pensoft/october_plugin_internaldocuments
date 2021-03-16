@@ -1,22 +1,25 @@
-
-
-<br xmlns="http://www.w3.org/1999/html">
-<a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ subfolder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Create subfolder</a>
-&nbsp;&nbsp;&nbsp;
-<a data-toggle="modal"  class="modal-link" href="#contentBasicFiles{{ subfolder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Upload files</a>
+<br>
+{% if is_editor or is_registered %}
+	<a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ subfolder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Create subfolder</a>
+	&nbsp;&nbsp;&nbsp;
+	<a data-toggle="modal"  class="modal-link" href="#contentBasicFiles{{ subfolder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Upload files</a>
 
 
 	{% partial __SELF__ ~ '::_popup-files-form' subfolder=subfolder %}
 	{% partial __SELF__ ~ '::_popup-folders-form' subfolder=subfolder partial_name='_subfolders_list' %}
 
-
+{% endif %}
 
 <div id="files_list_{{subfolder.id}}">
-	{% partial __SELF__ ~ '::_files_list' folder=subfolder group_id=subfolder.id %}
+	{% partial __SELF__ ~ '::_files_list' folder=subfolder group_id=subfolder.id is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 </div>
+
 <div id="sortableFolders{{subfolder.id}}">
-	{% partial __SELF__ ~ '::_subfolders_list' folder=subfolder %}
+	{% partial __SELF__ ~ '::_subfolders_list' folder=subfolder is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 </div>
+
+{% if is_editor or is_registered %}
 <script>
 	initSort('sortableFolders{{subfolder.id}}', '{{subfolder.id}}', 'folders');
 </script>
+{% endif %}

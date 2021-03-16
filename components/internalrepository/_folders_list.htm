@@ -9,12 +9,12 @@
 			<div class="col-xs-1 end-xs plusminus"><span class="plus"></span></div>
 			{% partial __SELF__ ~ '::_popup-edit-folder_name-form' subfolder=subfolder %}
 			<script>
-				initRightclickRenameFolderTippy('{{subfolder.id}}', '{{(subfolder.user_id == user.id)}}');
+				initRightclickRenameFolderTippy('{{subfolder.id}}', '{{(is_registered and subfolder.user_id == user.id) or is_editor}}');
 			</script>
 		</h3>
 		<div class="accordion-content folders" style="display: none;">
 			<div id="partialInternalDocuments">
-				{% partial '@internal_documents' subfolder=subfolder %}
+				{% partial '@internal_documents' subfolder=subfolder is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 			</div>
 		</div>
 	</div>

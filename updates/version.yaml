@@ -14,4 +14,10 @@
 1.0.6:
     - 'Users groups steering committee'
 1.0.7:
-    - 'mp4 file upload'
+    - 'Download files fix'
+1.0.8:
+    - 'Upload files fix'
+1.0.9:
+    - 'Upload files type pptx'
+1.0.10:
+    - 'Upload files type mp4'

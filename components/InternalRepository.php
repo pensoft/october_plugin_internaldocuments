@@ -3,8 +3,10 @@
 use Cms\Classes\ComponentBase;
 
 use Pensoft\Internaldocuments\Models\Subfolders;
+use RainLab\User\Models\User;
 use System\Models\File;
 use RainLab\User\Models\UserGroup;
+use October\Rain\Auth\Models\User as AuthUser;
 
 use Input;
 use Validator;
@@ -33,6 +35,9 @@ class InternalRepository extends ComponentBase
 		$this->addJs('assets/js/popper.min.js');
 		$this->addJs('assets/js/tippy-bundle.umd.min.js');
 		$this->addJs('assets/js/def.js');
+		if(post('download')){
+			$this->downloadFiles();
+		}
 
 		$this->page['queries'] = http_build_query(Input::all());
 		$this->page['is_download'] = post('download', false);
@@ -65,10 +70,10 @@ class InternalRepository extends ComponentBase
 		}
 	}
 
-	public function downloadFiles($pageId){
-		$inputs = Input::except('download');
+	public function downloadFiles(){
+//		$inputs = Input::except('download');
 		$download = Input::get('download');
-		$link = $this->pageUrl($pageId) .'?'. http_build_query($inputs);
+//		$link = $this->pageUrl($pageId) .'?'. http_build_query($inputs);
 		
 		$file_ids = explode(',', $download);
 		if(count($file_ids) === 1){
@@ -108,8 +113,9 @@ class InternalRepository extends ComponentBase
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			readfile($zip_file);
+			exit();
 		}
-		return redirect($link);
+//		return redirect($link);
 	}
 
 	public function onDeleteFile(){
@@ -191,6 +197,11 @@ class InternalRepository extends ComponentBase
 		$this->page['folder'] = $folderData;
 		$this->page['group_id'] = Input::get('parent');
 		$this->page['user'] = Auth::getUser();
+
+		$user = Auth::getUser();
+		$this->page['is_guest'] = $user->inGroup(UserGroup::where('code', 'guest')->first());
+		$this->page['is_registered'] = $user->inGroup(UserGroup::where('code', 'registered')->first());
+		$this->page['is_editor'] = $user->inGroup(UserGroup::where('code', 'internal-users')->first());
 
 	}
 

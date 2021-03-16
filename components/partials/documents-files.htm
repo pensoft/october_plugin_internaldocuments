@@ -12,14 +12,10 @@
 				{% endif %}
 			</div>
 			<div class="col-sm-2 col-xs-12 end-xs">
-				{% if is_download %}
-					{{__SELF__.downloadFiles(this.page.id)}}
-				{% endif %}
 				<a href="{{ ''| page }}?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a>
 			</div>
-
 			<script>
-				initRightclickDeleteTippy('{{file.id}}', 'file', '<a href="?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a><br/>', '{{file.user_id == user.id}}');
+				initRightclickDeleteTippy('{{file.id}}', 'file', '<a href="?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a><br/>', '{{(file.user_id == user.id and is_registered) or is_editor}}');
 			</script>
 		</div>
 	</div>
