@@ -23,3 +23,5 @@
     - 'Upload files type mp4'
 1.0.11:
     - 'get download param instead post'
+1.0.12:
+    - 'files upload form xlsx fix'
