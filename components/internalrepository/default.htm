@@ -4,18 +4,18 @@
 {% set is_editor = false %}
 {% set is_steering = false %}
 {% for group in user.groups %}
-	{% if group.code == 'guest' %}
-		{% set is_guest = true %}
-	{% endif %}
-	{% if group.code == 'registered' %}
-		{% set is_registered = true %}
-	{% endif %}
-	{% if group.code == 'internal-users' %}
-		{% set is_editor = true %}
-	{% endif %}
-	{% if group.code == 'steering-committee' %}
-		{% set is_steering = true %}
-	{% endif %}
+{% if group.code == 'guest' %}
+{% set is_guest = true %}
+{% endif %}
+{% if group.code == 'registered' %}
+{% set is_registered = true %}
+{% endif %}
+{% if group.code == 'internal-users' %}
+{% set is_editor = true %}
+{% endif %}
+{% if group.code == 'steering-committee' %}
+{% set is_steering = true %}
+{% endif %}
 {% endfor %}
 
 <div class="row middle-xs between-xs">
@@ -23,82 +23,82 @@
 
 	{% if has_query %}
 
-		<div class="col-xs-12">
-			<h1 class="base_heading inner-page">Search results for {{ post('query') }}</h1>
-				{% if user %}
-					{% if sub_folders %}
-						{% for resultFolder in sub_folders %}
-							{% partial __SELF__ ~'::internal_documents_search' folder=resultFolder  %}
-						{% endfor %}
+	<div class="col-xs-12">
+		<h1 class="base_heading inner-page">Search results for {{ post('query') }}</h1>
+		{% if user %}
+		{% if sub_folders %}
+		{% for resultFolder in sub_folders %}
+		{% partial __SELF__ ~'::internal_documents_search' folder=resultFolder  %}
+		{% endfor %}
 
-						{% for resultFile in files %}
-							{% partial __SELF__ ~'::internal_documents_search' file=resultFile %}
-						{% endfor %}
+		{% for resultFile in files %}
+		{% partial __SELF__ ~'::internal_documents_search' file=resultFile %}
+		{% endfor %}
 
-					{% else %}
+		{% else %}
 
-						{{'No records found'|_}}
+		{{'No records found'|_}}
 
-					{% endif %}
-				{% endif %}
-		</div>
+		{% endif %}
+		{% endif %}
+	</div>
 
 	{% else %}
-		<div class="col-xs-12">
-			<h1 class="base_heading inner-page">{{ folder.name }}</h1>
-			{% if folder.getParentsAndSelf.count %}
+	<div class="col-xs-12">
+		<h1 class="base_heading inner-page">{{ folder.name }}</h1>
+		{% if folder.getParentsAndSelf().count %}
 
-			{% if is_registered or is_editor %}
+		{% if is_registered or is_editor %}
 
-			<p>
-				<a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ folder.id }}"><span class="circled_plus"></span> Create folder</a> &nbsp; &nbsp;
-				<a data-toggle="modal" class="modal-link" href="#contentBasicFiles{{ folder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Upload files</a>
+		<p>
+			<a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ folder.id }}"><span class="circled_plus"></span> Create folder</a> &nbsp; &nbsp;
+			<a data-toggle="modal" class="modal-link" href="#contentBasicFiles{{ folder.id }}" style="margin-left: 0;"><span class="circled_plus"></span> Upload files</a>
 
 
-			</p>
-			{% endif %}
-			{% partial __SELF__ ~ '::_popup-files-form' subfolder=folder %}
-			{% partial __SELF__ ~ '::_popup-folders-form' subfolder=folder partial_name='_folders_list'  %}
+		</p>
+		{% endif %}
+		{% partial __SELF__ ~ '::_popup-files-form' subfolder=folder %}
+		{% partial __SELF__ ~ '::_popup-folders-form' subfolder=folder partial_name='_folders_list'  %}
 
-			<div id="files_list_{{folder.id}}">
-				{% partial __SELF__ ~ '::_files_list' folder=folder group_id=folder.id is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
-			</div>
-
-			{% endif %}
-
-			<div id="accordion-documents" class="text-left relative ui-accordion ui-widget ui-helper-reset" role="tablist">
-				<div id="sortableFolders{{folder.id}}">
-					{% partial __SELF__ ~ '::_folders_list' folder=folder is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
-				</div>
-				{% if is_registered or is_editor %}
-				<script>
-					initSort('sortableFolders{{folder.id}}', '{{folder.id}}', 'folders');
-				</script>
-				{% endif %}
-			</div>
-			<script>
-				initAccordeon('accordion-documents', '{{expand}}');
-			</script>
+		<div id="files_list_{{folder.id}}">
+			{% partial __SELF__ ~ '::_files_list' folder=folder group_id=folder.id is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 		</div>
 
-
-		{% if folders.count %}
-			<div class="col-xs-12">
-				<div class="row">
-					{% for record in folders %}
-					{% if (record.slug == 'steering-committee') and not is_steering %}
-					{% else %}
-					<div class="col-xs-12 col-sm-3 card internal no-border" style="margin-bottom: 15px">
-						<a class="folder-background" style="display:flex; background: url({{ record.cover.thumb(100,200,{'mode':'crop'}) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
-						<h3 class="card-header"><a href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}" style="color: #fff;">{{ record.name }}</a></h3>
-					</div>
-					{% endif %}
-					{% endfor %}
-				</div>
-			</div>
 		{% endif %}
+
+		<div id="accordion-documents" class="text-left relative ui-accordion ui-widget ui-helper-reset" role="tablist">
+			<div id="sortableFolders{{folder.id}}">
+				{% partial __SELF__ ~ '::_folders_list' folder=folder is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
+			</div>
+			{% if is_registered or is_editor %}
+			<script>
+				initSort('sortableFolders{{folder.id}}', '{{folder.id}}', 'folders');
+			</script>
+			{% endif %}
+		</div>
+		<script>
+			initAccordeon('accordion-documents', '{{expand}}');
+		</script>
+	</div>
+
+
+	{% if folders.count %}
+	<div class="col-xs-12">
+		<div class="row">
+			{% for record in folders %}
+			{% if (record.slug == 'steering-committee') and not is_steering %}
+			{% else %}
+			<div class="col-xs-12 col-sm-3 card internal no-border" style="margin-bottom: 15px">
+				<a class="folder-background" style="display:flex; background: url({{ record.cover.thumb(100,200,{'mode':'crop'}) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
+				<h3 class="card-header"><a href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}" style="color: #fff;">{{ record.name }}</a></h3>
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
 	{% endif %}
-	
+	{% endif %}
+
 
 </div>
 {% endif %}
