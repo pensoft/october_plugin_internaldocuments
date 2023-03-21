@@ -3,8 +3,8 @@
 	<div class="ss-result__content">
 		<h4 class="ss-result__title">
 			{% if file.id %}
-			{% if file.folderData.getParentsAndSelf.count %}
-			{% for parentFolder in file.folderData.getParentsAndSelf %}
+			{% if file.folderData.getParentsAndSelf().count %}
+			{% for parentFolder in file.folderData.getParentsAndSelf() %}
 			{{parentFolder.name}} /
 			{% endfor %}
 			{% endif %}
@@ -24,12 +24,12 @@
 			<a href="{{ ''| page }}?{{queries}}&download={{file.id}}" target="_self" class="download-icon">Download</a>
 			{% else %}
 			<span class="folder_icon"></span>
-			{% if folder.getParent.count %}
-			{% for parent in folder.getParents %}
+			{% if folder.getParent().count %}
+			{% for parent in folder.getParents() %}
 			{{parent.name}} /
 			{% endfor %}
 			{% endif %}
-			<a href="{{url('internal-repository')}}/{{folder.getRoot.slug}}/{% if folder.getParent[0].nest_depth > 0 %}{{folder.getParent[0].id}}{% endif %}">{{folder.name}}</a>
+			<a href="{{url('internal-repository')}}/{{folder.getRoot().slug}}/{% if folder.getParent()[0].nest_depth > 0 %}{{folder.getParent()[0].id}}{% endif %}">{{folder.name}}</a>
 			{% endif %}
 		</h4>
 	</div>

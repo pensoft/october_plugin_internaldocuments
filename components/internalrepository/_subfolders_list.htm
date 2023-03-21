@@ -1,4 +1,5 @@
-{% for group in folder.getChildren %}
+{% for group in folder.getChildren() %}
+
 <div id="delete_result_{{group.id}}">
 	<div id="accordion-documents" class="text-left relative ui-accordion ui-widget ui-helper-reset">
 
@@ -15,13 +16,23 @@
 		<div class="accordion-content subfolders mb-1" style="display: none;">
 			{% if is_registered or is_editor %}
 			<p><span>
+                {% if group.nest_depth <=3  %}
+                    <a data-toggle="modal" class="modal-link" href="#contentBasicFolder{{ group.id }}" style="margin-left: 0; margin-right: 10px;"><span class="circled_plus"></span> Create subfolder</a>
+                {% endif %}
 						<a data-toggle="modal" class="modal-link" href="#contentBasicFiles{{ group.id }}"><span class="circled_plus"></span> Upload files</a>
 						{% partial  __SELF__ ~ '::_popup-files-form' subfolder=group %}
+                        {% if group.nest_depth <=3  %}
+                                {% partial __SELF__ ~ '::_popup-folders-form' subfolder=group partial_name='_subfolders_list' %}
+                        {% endif %}
 			</span></p>
 			{% endif %}
 			<div id="files_list_{{ group.id }}">
 				{% partial __SELF__ ~ '::_files_list' folder=group group_id=group.id is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 			</div>
+
+            <div id="sortableFolders{{group.id}}" {% if group.nest_depth >=2  %} style="margin-left: {{20*group.nest_depth}}px;" {% endif %}>
+                {% partial __SELF__ ~ '::_subfolders_list' folder=group is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
+            </div>
 
 		</div>
 	</div>

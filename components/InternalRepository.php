@@ -42,12 +42,13 @@ class InternalRepository extends ComponentBase
 		$this->addJs('assets/js/popper.min.js');
 		$this->addJs('assets/js/tippy-bundle.umd.min.js');
 		$this->addJs('assets/js/def.js');
-		$this->page['queries'] = http_build_query(Input::all());
-		$this->page['is_download'] = get('download', false);
 
 		if(get('download')){
 			$this->downloadFiles();
 		}
+
+		$this->page['queries'] = http_build_query(Input::all());
+		$this->page['is_download'] = get('download', false);
 
 		if($query = post('query')){
 			$subFolders = Subfolders::where('name', 'iLIKE', '%' . $query . '%')->get();
