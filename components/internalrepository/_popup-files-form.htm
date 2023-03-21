@@ -5,35 +5,35 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Add files</h4>
+				<h4 class="modal-title text-center">File Uploader</h4>
 			</div>
 			<div class="modal-body">
-				<form class="ui form" method="post" data-request="{{__SELF__}}::onSubmit" data-request-validate data-request-files data-request-flash data-request-update="'@_files_list' : '#files_list_{{ subfolder.id }}'" data-request-success="$('.modal').modal('hide'); $(this).trigger('close.oc.popup');" >
-					<input type="hidden" name="_handler" value="onSubmit">
-					<input type="hidden" name="parent" value="{{subfolder.id}}">
-					<input type="hidden" name="user_id" value="{{subfolder.user_id}}">
-					{{form_token()}}
-					{{form_sessionKey()}}
 
-					<div class="field">
-						<label for="images">Images</label>
-						<input name="images[]" type="file" id="images" placeholder="Upload images" multiple="multiple" accept="image/*">
-						<div id="image_result"></div>
+				<div class="row justify-content-center">
+					<div class="col-xs-12">
+							
+						<div class="upload-body">
+							<div id="upload-container" class="text-center">
+								<button id="browseFile-{{subfolder.id}}" data-parentid="{{subfolder.id}}" class="btn btn-primary">Browse file to upload</button>
+								<p class="font-weight-normal text-muted" style="font-size:0.6rem;">Available file formats are (pdf, doc, docx, ppt, pptx, xls, xlsx, txt, mp4, png, jpg).</p>
+							</div>
+							
+							<div style="display: none" class="progress mt-3" style="height: 25px">
+								<progress class="progress-bar" style="width: 100%;" id="file" max="100" value="70"> 70% </progress>
+							</div>
+						</div>
+						<div class="upload-footer text-center" style="display: none">
+							File upload completed successfully
+						</div>
+
 					</div>
-
-					<div class="field">
-						<label for="files">Files</label>
-						<input name="files[]" type="file" id="files" placeholder="Upload files" multiple="multiple" accept=".pdf, .doc, .docx, .ppt, .pptx, .xls, xlsx, .txt">
-						<div id="file_result"></div>
-					</div>
-					<div class="mt-1 text-center">
-						<button type="submit" class="btn btn-primary">Save</button>
-						<p>&nbsp;</p>
-					</div>
-
-				</form>
-
+				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	run_resumable($("#browseFile-{{subfolder.id}}"))
+</script>

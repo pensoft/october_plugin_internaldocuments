@@ -10,6 +10,7 @@ use Redirect;
 use System\Models\File;
 use System\Classes\MediaLibrary;
 use Auth;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class FilesForm extends ComponentBase
 {

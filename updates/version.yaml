@@ -19,3 +19,9 @@
     - 'Upload files fix'
 1.0.9:
     - 'Upload files type pptx'
+1.0.10:
+    - 'Upload files type mp4'
+1.0.11:
+    - 'get download param instead post'
+1.0.16:
+    - 'CHUNK UPLOAD'

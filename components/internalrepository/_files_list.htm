@@ -1,13 +1,15 @@
+{% set images = function.get(folder.id)['images'] %}
+{% set files = function.get(folder.id)['files'] %}
 <p>
-	{% if folder.images.count %}
-		{% partial '@documents-images' images=folder.images group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
+	{% if function.get(group_id)['images'] %}
+		{% partial '@documents-images' images=images group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 	{% endif %}
 </p>
 
-<p>
+<p>	
 	{% if folder.files.count %}
 		<div id="sortableFiles{{folder.id}}">
-			{% partial '@documents-files' files=folder.files group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
+			{% partial '@documents-files' files=files group_id=folder.id  is_guest=is_guest is_registered=is_registered is_editor=is_editor %}
 		</div>
 		{% if is_registered or is_editor %}
 			<script>

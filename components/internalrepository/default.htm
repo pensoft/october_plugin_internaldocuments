@@ -17,7 +17,78 @@
 		{% set is_steering = true %}
 	{% endif %}
 {% endfor %}
-
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<script type="text/javascript">
+	function run_resumable(el){
+		let browseFile = el
+		let resumable = new Resumable({
+			target: '/chunk-upload',
+			query:{ parent_id: browseFile.data( "parentid" ) },
+			fileType: [
+				'pdf', 
+				'doc', 
+				'docx', 
+				'ppt', 
+				'pptx', 
+				'xls', 
+				'xlsx', 
+				'txt', 
+				'mp4', 
+				'png', 
+				'jpg',
+				'zip',
+				'rar'
+			],
+			chunkSize: 10*1024*1024,
+			headers: {
+				'Accept' : 'application/json'
+			},
+			testChunks: false,
+			throttleProgressCallbacks: 1,
+		});
+		let progress = $('.progress');
+		resumable.assignBrowse(browseFile);
+		// console.log(browseFile)
+		resumable.on('fileAdded', function (file) { // trigger when file picked
+			showProgress();
+			resumable.upload() // to actually start uploading.
+		});
+	
+		resumable.on('fileProgress', function (file) { // trigger when file progress update
+			updateProgress(Math.floor(file.progress() * 100));
+		});
+	
+		resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
+			response = JSON.parse(response)
+			$('.upload-footer').show();
+			setTimeout(function(){
+				$('.upload-footer').hide();
+				location.reload();
+			}, 3000)
+			hideProgress()
+		});
+	
+		resumable.on('fileError', function (file, response) { // trigger when there is any error
+			$('.upload-footer').html('file uploading error.')
+		});
+	
+	
+		function showProgress() {
+			progress.find('.progress-bar').html('0%');
+			progress.show();
+		}
+	
+		function updateProgress(value) {
+			progress.find('.progress-bar').attr('value', value)
+			progress.find('.progress-bar').html(`${value}%`)
+		}
+	
+		function hideProgress() {
+			progress.hide();
+		}
+	}
+    
+</script>
 <div class="row middle-xs between-xs">
 	{% partial __SELF__ ~'::search-documents-search-form' folder=folder %}
 
@@ -89,7 +160,13 @@
 					{% if (record.slug == 'steering-committee') and not is_steering %}
 					{% else %}
 					<div class="col-xs-12 col-sm-3 card internal no-border" style="margin-bottom: 15px">
-						<a class="folder-background" style="display:flex; background: url({{ record.cover.thumb(100,200,{'mode':'crop'}) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
+                        {% if __SELF__.property('useAWSFiles') %}
+                        <a class="folder-background" style="display:flex; background: url({{ getAWSFile(record.cover.path) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
+                        {% else %}
+                        <a class="folder-background" style="display:flex; background: url({{ record.cover.thumb(100,200,{'mode':'crop'}) }}) center center no-repeat; background-size: 100px; height: 200px" href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}"></a>
+                        {% endif %}
+
+
 						<h3 class="card-header"><a href="{{url('internal-repository')}}/{{ record.slug }}" title="{{ record.name }}" style="color: #fff;">{{ record.name }}</a></h3>
 					</div>
 					{% endif %}
@@ -98,7 +175,8 @@
 			</div>
 		{% endif %}
 	{% endif %}
-	
+
 
 </div>
 {% endif %}
+

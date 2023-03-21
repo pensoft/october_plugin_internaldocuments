@@ -33,7 +33,7 @@ class Subfolders extends Model
 	public $attachMany = [
 		'files' => ['System\Models\File', 'order' => 'sort_order'],
 		'images' => ['System\Models\File', 'order' => 'sort_order'],
-		];
+	];
 
 	public $attachOne = [
 		'cover' => 'System\Models\File'

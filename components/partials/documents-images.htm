@@ -1,7 +1,14 @@
+{% if images.count %}
 <div class="all_images_container" id="sortableImages{{group_id}}">
 	{% for image in images %}
 		<div id="delete_result_{{image.id}}" class="documents_images_list">
-			<img  src="{{image.thumb(150,120,{'mode':'crop'})}}" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}" />
+            {% if __SELF__.property('useAWSFiles') %}
+            <img src="{{ getAWSFile(image.path) }}" width="150" height="120" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}">
+            {% else %}
+            <img  src="{{image.thumb(150,120,{'mode':'crop'})}}" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}" />
+            {% endif %}
+
+
 			<script>
 				initRightclickDeleteTippy('{{image.id}}', 'image', '<a href="?{{queries}}&download={{image.id}}" target="_self" class="download-icon">Download</a><br/>', '{{(image.user_id == user.id and is_registered) or is_editor}}');
 			</script>
@@ -21,4 +28,6 @@
 <script>
 	initSort('sortableImages{{group_id}}', '{{group_id}}', 'images');
 </script>
+{% endif %}
+
 {% endif %}
