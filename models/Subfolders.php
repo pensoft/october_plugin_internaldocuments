@@ -11,6 +11,10 @@ class Subfolders extends Model
     use \October\Rain\Database\Traits\Validation;
 	use \October\Rain\Database\Traits\NestedTree;
 
+    use \October\Rain\Database\Traits\SoftDelete;
+
+    protected $dates = ['deleted_at'];
+
     /**
      * @var string The database table used by the model.
      */
@@ -32,12 +36,12 @@ class Subfolders extends Model
 	];
 
 	public $attachMany = [
-		'files' => ['System\Models\File', 'order' => 'sort_order'],
-		'images' => ['System\Models\File', 'order' => 'sort_order'],
+		'files' => ['System\Models\File', 'order' => 'sort_order', 'delete' => false],
+		'images' => ['System\Models\File', 'order' => 'sort_order', 'delete' => false],
 	];
 
 	public $attachOne = [
-		'cover' => 'System\Models\File'
+		'cover' => ['System\Models\File', 'delete' => false],
 	];
 
     // Add  for revisions limit

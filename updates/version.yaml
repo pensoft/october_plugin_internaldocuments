@@ -34,4 +34,10 @@
 1.0.16:
     - 'CHUNK UPLOAD'
 1.0.17:
-    - 'fix'
+    - fix
+1.0.18:
+    - 'Updated table pensoft_internaldocuments_subfolders'
+    - builder_table_update_pensoft_internaldocuments_subfolders.php
+1.0.19:
+    - 'Updated table system_files'
+    - add_deleted_at_to_system_files.php

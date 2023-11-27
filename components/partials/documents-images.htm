@@ -1,15 +1,17 @@
 {% if images.count %}
 <div class="all_images_container" id="sortableImages{{group_id}}">
 	{% for image in images %}
-		<div id="delete_result_{{image.id}}" class="documents_images_list">
+        {% if image.deleted_at is null %}
+            <div id="delete_result_{{image.id}}" class="documents_images_list">
 
-            <img  src="{{image.thumb(150,120,{'mode':'crop'})}}" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}" />
+                <img  src="{{image.thumb(150,120,{'mode':'crop'})}}" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}" />
 
 
-			<script>
-				initRightclickDeleteTippy('{{image.id}}', 'image', '<a href="?{{queries}}&download={{image.id}}" target="_self" class="download-icon">Download</a><br/>', '{{(image.user_id == user.id and is_registered) or is_editor}}');
-			</script>
-		</div>
+                <script>
+                    initRightclickDeleteTippy('{{image.id}}', 'image', '<a href="?{{queries}}&download={{image.id}}" target="_self" class="download-icon">Download</a><br/>', '{{(image.user_id == user.id and is_registered) or is_editor}}');
+                </script>
+            </div>
+        {% endif %}
 	{% endfor %}
 </div>
 <div style="clear: both;"></div>

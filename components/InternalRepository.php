@@ -57,6 +57,7 @@ class InternalRepository extends ComponentBase
 			$this->page['files'] = File::where(
 				'attachment_type', Subfolders::class)
 				->where('file_name', 'ilike', '%'.$query.'%')
+				->where('deleted_at', null)
 				->get()
 				->map(function ($file){
 					$folder = Subfolders::find($file->attachment_id);
@@ -262,8 +263,11 @@ class InternalRepository extends ComponentBase
 	{
 		$fileId = post('id');
 		$file = File::find($fileId);
-		if($file)
-			$file->delete();
+		if($file){
+            $file->deleted_at = date("Y-m-d H:i:s"); // now
+            $file->field = 'deleted_files';
+            $file->save();
+        }
 		return ['#delete_result_'.$fileId => ''];
 	}
 

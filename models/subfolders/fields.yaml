@@ -18,16 +18,17 @@ fields:
             field: name
             type: ''
         type: text
-    images:
-        label: Images
+    cover:
+        label: 'Cover image'
         mode: image
         useCaption: true
-        fileTypes: svg,png,jpg
+        fileTypes: 'svg,png,jpg'
         thumbOptions:
             mode: crop
             extension: auto
         span: auto
         type: fileupload
+        comment: 'for root folders only'
     files:
         label: Files
         mode: file
@@ -37,17 +38,6 @@ fields:
             extension: auto
         span: auto
         type: fileupload
-    cover:
-        label: 'Cover image'
-        mode: image
-        useCaption: true
-        fileTypes: svg,png,jpg
-        thumbOptions:
-            mode: crop
-            extension: auto
-        span: full
-        type: fileupload
-        comment: 'for root folders only'
     user:
         label: User
         nameFrom: name
