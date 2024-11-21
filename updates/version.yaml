@@ -41,3 +41,5 @@
 1.0.19:
     - 'Updated table system_files'
     - add_deleted_at_to_system_files.php
+1.0.20:
+    - 'Added 4 more allowed file extensions'
