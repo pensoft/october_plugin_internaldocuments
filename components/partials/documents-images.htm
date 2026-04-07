@@ -1,0 +1,32 @@
+{% if images.count %}
+<div class="all_images_container" id="sortableImages{{group_id}}">
+	{% for image in images %}
+        {% if image.deleted_at is null %}
+            <div id="delete_result_{{image.id}}" class="documents_images_list">
+
+                <img  src="{{image.thumb(150,120,{'mode':'crop'})}}" alt="{{image.file_name}}" style="margin: 5px;" id="tipContainer{{image.id}}" />
+
+
+                <script>
+                    initRightclickDeleteTippy('{{image.id}}', 'image', '<a href="?{{queries}}&download={{image.id}}" target="_self" class="download-icon">Download</a><br/>', '{{(image.user_id == user.id and is_registered) or is_editor}}');
+                </script>
+            </div>
+        {% endif %}
+	{% endfor %}
+</div>
+<div style="clear: both;"></div>
+<p>
+	<a href="{{ ''| page }}?{{queries}}&download={{images|map(image => image.id)|join(',')}}" target="_self" class="download-icon">Download</a>
+
+	{% if images.count > 7 %}
+	&nbsp;&nbsp;&nbsp;
+	<a href="javascript:;" onclick="toggleImages('{{group_id}}');" class="show_all_btn{{group_id}}">Show all</a>
+	{% endif %}
+</p>
+{% if is_registered or is_editor %}
+<script>
+	initSort('sortableImages{{group_id}}', '{{group_id}}', 'images');
+</script>
+{% endif %}
+
+{% endif %}

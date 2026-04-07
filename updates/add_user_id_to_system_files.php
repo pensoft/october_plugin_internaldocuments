@@ -1,0 +1,28 @@
+<?php namespace Pensoft\InternalDocuments\Updates;
+
+use Illuminate\Database\Schema\Blueprint;
+use Schema;
+use October\Rain\Database\Updates\Migration;
+
+class AddUserIdToSystemFiles extends Migration
+{
+	public function up(): void
+	{
+		if (!Schema::hasColumn('system_files', 'user_id')) {
+			Schema::table('system_files', function(Blueprint $table)
+			{
+				$table->integer('user_id')->nullable();
+			});
+		}
+	}
+
+	public function down(): void
+	{
+		if (Schema::hasColumn('system_files', 'user_id')) {
+			Schema::table('system_files', function(Blueprint $table)
+			{
+				$table->dropColumn('user_id');
+			});
+		}
+	}
+}
