@@ -284,7 +284,7 @@ class InternalRepository extends ComponentBase
 	public function onSubmit(){
 		$validator = Validator::make(
 			[
-				'name' => request()->query('name'),
+				'name' => request()->input('name'),
 				'files' => request()->file('files'),
 				'images' => request()->file('images'),
 			],
@@ -299,22 +299,22 @@ class InternalRepository extends ComponentBase
 			return Redirect::back()->withErrors($validator);
 		}
 
-		if(request()->query('name')){
+		if(request()->input('name')){
 			$subfolder = new Subfolders();
-			$subfolder->name = request()->query('name');
-			$subfolder->parent_id = request()->query('parent');
+			$subfolder->name = request()->input('name');
+			$subfolder->parent_id = request()->input('parent');
 		}else{
-			$subfolder = Subfolders::find(request()->query('parent'));
+			$subfolder = Subfolders::find(request()->input('parent'));
 
 		}
 
-		$subfolder->user_id = request()->query('user_id');
+		$subfolder->user_id = request()->input('user_id');
 		$subfolder->save();
 
-		$folderData = Subfolders::where('id', request()->query('parent'))->first();
+		$folderData = Subfolders::where('id', request()->input('parent'))->first();
 
 		$this->page['folder'] = $folderData;
-		$this->page['group_id'] = request()->query('parent');
+		$this->page['group_id'] = request()->input('parent');
 		$this->page['user'] = Auth::getUser();
 
 		$user = Auth::getUser();
@@ -325,8 +325,8 @@ class InternalRepository extends ComponentBase
 	}
 
 	public function onFolderRename(){
-		$folderId = request()->query('id');
-		$folderName = request()->query('name');
+		$folderId = request()->input('id');
+		$folderName = request()->input('name');
 
 		$folder = Subfolders::find($folderId);
 		if($folder){

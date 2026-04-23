@@ -11,8 +11,6 @@
 				<form class="ui form" method="post" data-request="{{__SELF__}}::onFolderRename" data-request-update="'@_folder_name' : '#folderName-{{ subfolder.id }}'" data-request-success="$('.modal').modal('hide'); $(this).trigger('close.oc.popup');" >
 					<input type="hidden" name="_handler" value="onFolderRename">
 					<input type="hidden" name="id" value="{{subfolder.id}}">
-					{{form_token()}}
-					{{form_sessionKey()}}
 					<div class="field">
 						<label for="name">Name</label>
 						<input name="name" type="text" id="name" value="{{subfolder.name}}">
