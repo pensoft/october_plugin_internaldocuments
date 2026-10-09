@@ -43,3 +43,5 @@
     - add_deleted_at_to_system_files.php
 1.0.20:
     - 'Added 4 more allowed file extensions'
+1.0.21:
+    - 'Download all fix'

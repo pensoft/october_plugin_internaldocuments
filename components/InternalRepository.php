@@ -197,44 +197,50 @@ class InternalRepository extends ComponentBase
 
 	public function downloadFiles()
 	{
-		$download = Input::get('download');
-		$file_ids = explode(',', $download);
-		if(count($file_ids) === 1){
-			$file = File::find($file_ids[0]);
-			$filePath = 'storage/app/'.dirname($file->getDiskPath());
-			$this->response_stream($filePath.'/'.$file->disk_name, $file->file_name);
-            exit();
-		}else if(count($file_ids) > 1){
-			$files = File::find($file_ids);
-			$zip_file = tempnam(sys_get_temp_dir(), "archives");
-			$zip = new \ZipArchive();
-			$zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
-			foreach ($files as $item) {
-				$fileId = $item['id'];
-				$file = File::find($fileId);
-				$filePath = $file->getLocalPath();
-				$filename = $item['file_name'];
-				$i = 1;
-				if ($filename == basename($filePath)) {
-					$filename = $i . '-' . basename($filePath);
-					$i++;
-				} else {
-					$filename = basename($filePath);
-					$i = 1;
-				}
-				$zip->addFile(
-					$filePath,
-					$filename
-				);
-			}
-			$zip->close();
-			header("Content-type: application/zip");
-			header("Content-Disposition: attachment; filename=archives.zip");
-			header("Pragma: no-cache");
-			header("Expires: 0");
-			readfile($zip_file);
+		$file_ids = array_filter(array_map('intval', explode(',', (string) Input::get('download'))));
+		$files = File::whereIn('id', $file_ids)->whereNull('deleted_at')->get()
+			->filter(function ($file) {
+				return is_file($file->getLocalPath());
+			});
+
+		if ($files->isEmpty()) {
+			return;
+		}
+
+		while (ob_get_level()) {
+			ob_end_clean();
+		}
+
+		if ($files->count() === 1) {
+			$file = $files->first();
+			$this->response_stream($file->getLocalPath(), $file->file_name);
 			exit();
 		}
+
+		$zip_file = tempnam(sys_get_temp_dir(), "archives");
+		$zip = new \ZipArchive();
+		$zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+		$usedNames = [];
+		foreach ($files as $file) {
+			// Use the original upload name; add " (2)", " (3)"... when two files share a name.
+			$filename = $file->file_name ?: basename($file->getLocalPath());
+			$base = pathinfo($filename, PATHINFO_FILENAME);
+			$ext = pathinfo($filename, PATHINFO_EXTENSION);
+			for ($i = 2; isset($usedNames[mb_strtolower($filename)]); $i++) {
+				$filename = $base . ' (' . $i . ')' . ($ext !== '' ? '.' . $ext : '');
+			}
+			$usedNames[mb_strtolower($filename)] = true;
+			$zip->addFile($file->getLocalPath(), $filename);
+		}
+		$zip->close();
+		header("Content-type: application/zip");
+		header("Content-Disposition: attachment; filename=archives.zip");
+		header("Content-Length: " . filesize($zip_file));
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		readfile($zip_file);
+		unlink($zip_file);
+		exit();
 	}
 
 	private function response_stream($filePath, $fileName)

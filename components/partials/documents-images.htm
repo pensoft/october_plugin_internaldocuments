@@ -16,7 +16,7 @@
 </div>
 <div style="clear: both;"></div>
 <p>
-	<a href="{{ ''| page }}?{{queries}}&download={{images|map(image => image.id)|join(',')}}" target="_self" class="download-icon">Download</a>
+	<a href="{{ ''| page }}?{{queries}}&download={{images|map(image => image.id)|join(',')}}" target="_self" class="download-icon">Download all</a>
 
 	{% if images.count > 7 %}
 	&nbsp;&nbsp;&nbsp;
